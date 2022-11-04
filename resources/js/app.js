@@ -60,15 +60,13 @@ const answer = document.getElementById('answer')
 const leftBlob = document.getElementById('left-blob')
 const rightBlob = document.getElementById('right-blob')
 
-const durationChange = {}
-
 const white = '#FFFFFF'
 const lightblue = '#7678ED'
 
 let questions, count, correct, blobs, thisCategoryBlobs, colorBlobs
 let correctCategory = {}
 
-const transitionDuration = 500
+const transitionDuration = 400
 
 function scaleUp(delayfactor, element) {
     setTimeout(function() {
@@ -86,11 +84,11 @@ function scaleDown(delayfactor, element) {
 
 function durationAdd(element) {
     element.classList.remove('duration-0')
-    element.classList.add('duration-500')
+    element.classList.add('duration-400')
 }
 
 function durationRemove(element) {
-    element.classList.remove('duration-500')
+    element.classList.remove('duration-400')
     element.classList.add('duration-0')
 }
 
@@ -191,13 +189,13 @@ function yesAndNoButton() {
     }
 }
 
-frontPageButton.onclick = function() {
+frontPageButton.addEventListener("click", function() {
     axios.get('/questions').then(response => {
         resultPageButton.disabled = false
         frontPageButton.disabled = true
 
         questions = response.data
-
+        console.log(questions)
         count = []
         correct = []
         correctCategory['Film & TV'] = []
@@ -246,9 +244,9 @@ frontPageButton.onclick = function() {
         scaleUp(2.1, questionPageButtonContainer)
         scaleUp(2.6, progressBarContainer)
     })
-}
+})
 
-questionPageButton.onclick = function() {
+questionPageButton.addEventListener("click", function() {
     frontPageButton.disabled = false
     answerPageButtonYes.disabled = false
     answerPageButtonNo.disabled = false
@@ -286,25 +284,23 @@ questionPageButton.onclick = function() {
 
     scaleUp(1.6, answerPageText)
     scaleUp(2.1, answerPageButtonContainer)
-}
+})
 
-answerPageButtonYes.onclick = function() {
+answerPageButtonYes.addEventListener("click", function() {
     correct.push(1)
     correctCategory[category.textContent].push(1)
 
     yesAndNoButton()
-}
+})
 
-answerPageButtonNo.onclick = function() {      
+answerPageButtonNo.addEventListener("click", function() {      
     yesAndNoButton()
-}
+})
 
-resultPageButton.onclick = function() {
+resultPageButton.addEventListener("click", function() {
     answerPageButtonYes.disabled = false
     answerPageButtonNo.disabled = false
     resultPageButton.disabled = true
-
-    durationRemove(body)
 
     scaleDown(0, resultPageText)
     scaleDown(0.5, resultPageBlobs)
@@ -317,4 +313,4 @@ resultPageButton.onclick = function() {
         
     scaleUp(2.1, frontPageText)
     scaleUp(2.6, frontPageButtonContainer)
-}
+})
